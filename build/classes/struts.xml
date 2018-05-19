@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+	"http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+<constant name="conststruts.devMode" value="true" />
+    <package name="default" extends="struts-default">       
+         <interceptors>
+		<interceptor name="abc" class="action.MyInterceptor"></interceptor>
+		</interceptors>
+		<global-results>
+		<result name="login">/login.jsp</result>
+		</global-results>
+		
+		<action name="upload" class="action.StudentAction" method="addStudent">
+			<interceptor-ref name="token"/>
+        	<interceptor-ref name="fileUpload">
+        		<param name="allowedTypes">
+        			image/png,image/jpeg,image/jpg,image/x-ms-bmp
+        		</param>
+        		<param name="maximunSize">1024</param>
+        	</interceptor-ref>    
+        	<interceptor-ref name="defaultStack"/> 
+        	<interceptor-ref name="abc"/> 
+			<param name="savePath">/uploadFiles</param>
+			<result name="addStudentSuccess" type="chain">showStudent</result>
+			<result name="addStudentError">/WEB-INF/content/addstudent.jsp</result>
+		</action>
+		
+		<action name="loginAction" class="action.loginAction">
+			<result name="loginsuccess">/WEB-INF/content/success.jsp</result>
+			<result name="loginerror">/login.jsp</result>
+		</action> 
+		
+		<action name="ClazzAction" class="action.ClazzAction" method="addClazz">
+			<result name="addsuccess" type="chain">showClazz</result>
+			<result name="adderror">/WEB-INF/content/build.jsp</result> 
+		</action>
+		<action name="showClazz" class="action.ClazzAction" method="showClazz">
+			<result name="showsuccess">/WEB-INF/content/build_success.jsp</result>
+			<result name="showerror">/WEB-INF/content/build.jsp</result>
+		</action>
+		<action name="modifiAction" class="action.ClazzAction" method="checkClazz">
+			<result name="getsuccess">/WEB-INF/content/modify.jsp</result>
+			<result name="input">/WEB-INF/content/build_success.jsp</result> 
+		</action>
+		
+		<action name="modifiClazzAction" class="action.ClazzAction" method="modifiClazz">
+			<result name="modifiSuccess" type="chain">showClazz</result>
+			<result name="input">/WEB-INF/content/modify.jsp</result>
+		</action>
+		
+		<action name="DeleteAction" class="action.ClazzAction" method="DeleteAction">
+			 <result name="deletesuccess">/WEB-INF/content/build_success.jsp</result>
+			 <result name="input">/WEB-INF/content/build_success.jsp</result>
+		</action>
+		
+		<action name="StudentClazzAction" class="action.ClazzAction" method="StudentClazzAction">
+			<result name="clazzsuccess">/WEB-INF/content/addstudent.jsp</result>
+			<result name="clazzerror">/WEB-INF/content/build_success.jsp</result>
+		</action>
+		
+		<action name="showStudent" class="action.StudentAction" method="showStudnet">
+			<result name="showStudentSuccess">/WEB-INF/content/addstudent_success.jsp</result>
+			<result name="showStudentError">/WEB-INF/content/addstudent.jsp</result>
+			<interceptor-ref name="abc"/>
+		</action>
+		
+		<action name="modifiStudentAction" class="action.StudentAction" method="checkStudent">
+			<result name="getStusuccess">/WEB-INF/content/modifyStudent.jsp</result>
+			<result name="input">/WEB-INF/content/addstudent_success.jsp</result>
+		</action>
+		
+		<action name="showStudents" class="action.StudentAction" method="showStudnet">
+			<result name="showStudentSuccess">/WEB-INF/content/addstudent_success.jsp</result>
+			<result name="showStudentError">/WEB-INF/content/success.jsp</result>
+			<interceptor-ref name="abc"/>
+		</action>
+		
+		<action name="modifyStudent" class="action.StudentAction" method="modifyStudent">
+			<param name="savePath">/uploadFiles</param>
+			<result name="modifyStudentSuccess" type="chain">showStudent</result>
+			<result name="input">/WEB-INF/content/modifyStudent.jsp</result> 
+		</action>
+
+		<action name="DeleteStudentAction" class="action.StudentAction" method="DeleteStudentAction">
+			 <result name="deleteStudentsuccess" type="chain">showStudents</result>
+			 <result name="input">/WEB-INF/content/build_success.jsp</result> 
+		</action>
+
+		<action name="search" class="action.StudentAction" method="search"> 
+			<result name="search">/WEB-INF/content/search.jsp</result>
+			<result name="input">/WEB-INF/content/addstudent_success.jsp</result>
+		</action>
+
+		<action name="*">
+			<result>/WEB-INF/content/{1}.jsp</result>
+		</action>
+    </package>
+
+</struts>
